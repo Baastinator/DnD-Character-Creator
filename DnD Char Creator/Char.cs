@@ -44,7 +44,7 @@ namespace DnD_Char_Creator
             this.alignmentIdeals = alignmentIdeals;
             this.bonds = bonds;
         }
-        public static string GenTown()
+        public static string GetTown()
         {
             int ID = rnd.Next(1, 101);
             double math = (175 / ID - 16) - 1.5;

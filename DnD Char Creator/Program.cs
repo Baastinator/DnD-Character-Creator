@@ -7,8 +7,8 @@ namespace DnD_Char_Creator
         static void Main(string[] args)
         {
             bool programLoop = true;
-            while (true) 
-            { 
+            while (true)
+            {
                 Char character;
                 bool isPlayer = false;
                 while (true)
@@ -40,8 +40,8 @@ namespace DnD_Char_Creator
                 {
                     Console.Clear();
                     Console.WriteLine(DisplayStats(preStats));
-                    Console.WriteLine("\n\nType numbers from 1 to 6 to Prevent stats from being rerolled (X for locked)");
-                    Console.WriteLine("Type C to Cancel, type F to finish and save stats, type R to reroll");
+                    Console.WriteLine("\n\nType numbers from (1) to (6) to Prevent stats from being rerolled (X for locked)");
+                    Console.WriteLine("Type (C) to Cancel, type (F) to finish and save stats, type (R) to reroll");
                     string input = Console.ReadLine();
                     switch (input)
                     {
@@ -159,11 +159,29 @@ namespace DnD_Char_Creator
                     Console.Clear();
                     Console.Write("Please insert your character's name: ");
                     string name = Console.ReadLine();
-                    Console.Wri
-                }
-                if (!programLoop)
-                {
-                    break;
+                    Console.Write("Is your character Male (1) or Female (2)? (R) for Random: ");
+                    string gender = Console.ReadLine();
+                    if (gender == "1") { gender = "Male"; }
+                    else if (gender == "2") { gender = "Female"; }
+                    else if (gender == "R") { gender = Char.GetSex(); }
+                    else throw new Exception("Gender");
+                    Console.Write("What Species is your character? (R) for Random: ");
+                    string species = Console.ReadLine();
+                    if (species == "R") { species = Char.GetSpecies(); }
+                    Console.Write("What is your character's hometown? (R) for Random: ");
+                    string homeTown = Console.ReadLine();
+                    if (homeTown == "R") { homeTown = Char.GetTown(); }
+                    Console.Write("What is your character's Class? (R) For Random, (0) for classless");
+                    string Class = Console.ReadLine();
+                    if (Class == "R") { Class = Char.GetClass(); } else if (Class == "0") { Class = "None"; }
+                    Console.Write("What is your character's Job?\n(R) for Random, (0) for Unemployed, \"Student\" for Student: ");
+                    string job = Console.ReadLine();
+                    if (job == "R") { job = Char.GetJob(); } else if (job == "0") { job = "Unemployed"; }
+                    bool[] locks = { false, false, false, false, false, false };
+                    while (true)
+                    {
+                        DisplayDetails(name, gender, species, homeTown, Class, job, locks);
+                    }
                 }
                 bool personalityLoop = true;
                 while (personalityLoop)
@@ -171,7 +189,7 @@ namespace DnD_Char_Creator
                     Console.Clear();
 
                     string input = Console.ReadLine();
-                    
+
                 } // make personality and appearance
                 if (!programLoop)
                 {
@@ -191,6 +209,23 @@ namespace DnD_Char_Creator
             output += "6 | " + stats.CHA.IsLocked() + " | CHA: " + stats.CHA.value + "\n";
 
             return output;
+        }
+        static string DisplayDetails(string name, string sex, string species, string residence, string Class, string job, bool[] locks)
+        {
+            string[] locks2 = new string[6];
+            for (int i = 0; i < 6; i++)
+            {
+                if (locks[i]) { locks2[i] = "X"; } else locks2[i] = " ";
+            }
+            string a = "";
+            int i = 0;
+            a += "| " + locks2[i] + " | Name: " + name + "\n";i++;
+            a += "| " + locks2[i] + " | Sex: " + sex + "\n"; i++;
+            a += "| " + locks2[i] + " | Species: " + species + "\n"; i++;
+            a += "| " + locks2[i] + " | Home Town: " + residence + "\n"; i++;
+            a += "| " + locks2[i] + " | Class: " + Class + "\n"; i++;
+            a += "| " + locks2[i] + " | Job: " + job;
+            return a;
         }
     }
 }
