@@ -7,9 +7,9 @@ namespace DnD_Char_Creator
         static Random rnd = new Random();
         public bool isPlayer = false;
         public StatGroup stats;
-        public string name, sex, species, appearance, talents, mannerisms, traits, flawsSecrets, neutralIdeal, otherIdeal;
-        public string residence, job, Class;
-        public string[] lawIdeals, alignmentIdeals, bonds;
+        public string name, sex, species, residence, job, Class;
+        public Personality appearance, talents, mannerisms, traits, flawsSecrets, neutralIdeal, otherIdeal;
+        public Personality[] lawIdeals, alignmentIdeals, bonds;
 
         public Char(bool isPlayer = false)
         {
@@ -28,49 +28,153 @@ namespace DnD_Char_Creator
             this.Class = Class;
             this.job = job;
         }
-        public void SetPersonality(string appearance, string talents, string mannerisms, string traits, string flawsSecrets, string[] bonds)
+        public void SetPers(Personality[] persArray)
         {
-            this.appearance = appearance;
-            this.talents = talents;
-            this.mannerisms = mannerisms;
-            this.traits = traits;
-            this.flawsSecrets = flawsSecrets;
-            this.bonds = bonds;
+            this.appearance = persArray[0];
+            this.talents = persArray[1];
+            this.mannerisms = persArray[2];
+            this.traits = persArray[3];
+            this.flawsSecrets = persArray[4];
+            this.neutralIdeal = persArray[5];
+            this.otherIdeal = persArray[6];
         }
-        public void SetIdeals(string[] lawIdeals, string[] alignmentIdeals, string neutralIdeal, string otherIdeal)
+        public void SetPersArrays(Personality[] lawIdeals, Personality[] alignmentIdeals, Personality[] bonds)
         {
             this.lawIdeals = lawIdeals;
             this.alignmentIdeals = alignmentIdeals;
-            this.neutralIdeal = neutralIdeal;
-            this.otherIdeal = otherIdeal;
+            this.bonds = bonds;
         }
-        public static StatGroup MakeStats()
+        public static string GenTown()
         {
-            Stat[] stats = new Stat[6];
-            stats[0] = MakeStat("STR");
-            stats[1] = MakeStat("DEX");
-            stats[2] = MakeStat("CON");
-            stats[3] = MakeStat("INT");
-            stats[4] = MakeStat("WIS");
-            stats[5] = MakeStat("CON");
-            StatGroup output = new StatGroup(stats);
-            return output;
-        }
-        public static Stat MakeStat(string type)
-        {
-            int[] num = new int[4];
-            for (int i = 0; i < 4; i++)
+            int ID = rnd.Next(1, 101);
+            double math = (175 / ID - 16) - 1.5;
+            switch ((int)(math))
             {
-                num[i] = DSix();
+                case 1:
+                    return "Vrever";
+                case 2:
+                    return "Northam";
+                case 3:
+                    return "Mournstead";
+                case 4:
+                    return "Thesvons";
+                case 5:
+                    return "Jolborg";
+                case 6:
+                    return "Sarton";
+                case 7:
+                    return "Westbourne";
+                case 8:
+                    return "Howe";
+                case 9:
+                    return "Cirrane";
+                case 10:
+                    return "Snowbush";
             }
-            Array.Sort(num);
-            int statValue = num[1] + num[2] + num[3];
-            Stat output = new Stat(type, statValue);
-            return output;
+            throw new Exception("GenTown");
         }
-        public static int DSix()
+        public static string GetSex()
         {
-            return rnd.Next(1, 7);
+            int ID = rnd.Next(1, 3);
+            switch (ID)
+            {
+                case 1:
+                    return "Male";
+                case 2:
+                    return "Female";
+            }
+            throw new Exception("Sex");
+        }
+        public static string GetSpecies()
+        {
+            int ID = rnd.Next(1, 101);
+            double math = (128 / ID + 16) - 1;
+            switch ((int)math)
+            {
+                case 1:
+                    return "Human";
+                case 2:
+                    return "Half Elf";
+                case 3:
+                    return "Half Orc";
+                case 4:
+                    return "Elf";
+                case 5:
+                    return "Dwarf";
+                case 6:
+                    return "Dragonborn";
+                case 7:
+                    return "Halfling";
+            }
+            throw new Exception("Species");
+        }
+        public static string GetJob()
+        {
+            int ID = rnd.Next(1, 14);
+            switch (ID)
+            {
+                case 1:
+                    return "Labourer";
+                case 2:
+                    return "Guard";
+                case 3:
+                    return "Farmer";
+                case 4:
+                    return "Doctor";
+                case 5:
+                    return "Woodcutter";
+                case 6:
+                    return "Barkeep";
+                case 7:
+                    return "Mason";
+                case 8:
+                    return "Carpenter";
+                case 9:
+                    return "Tailor";
+                case 10:
+                    return "Smith";
+                case 11:
+                    return "Merchant";
+                case 12:
+                    return "Teacher";
+                case 13:
+                    return "Judge";
+            }
+            throw new Exception("Job");
+        }
+        public static string GetClass()
+        {
+            int ID = rnd.Next(1,14);
+            switch (ID)
+            {
+                case 1:
+                    return "Artificer";
+                case 2:
+                    return "Barbarian";
+                case 3:
+                    return "Bard";
+                case 4:
+                    return "Cleric";
+                case 5:
+                    return "Druid";
+                case 6:
+                    return "Fighter";
+                case 7:
+                    return "Monk";
+                case 8:
+                    return "Paladin";
+                case 9:
+                    return "Ranger";
+                case 10:
+                    return "Rogue";
+                case 11:
+                    return "Sorcerer";
+                case 12:
+                    return "Warlock";
+                case 13:
+                    return "Wizard";
+            }
+            throw new Exception("Class");
         }
     }
 }

@@ -34,14 +34,14 @@ namespace DnD_Char_Creator
                     Console.Clear();
                 }// check for NPC
                 character = new Char(isPlayer);
-                StatGroup preStats = Char.MakeStats();
+                StatGroup preStats = Stat.MakeStats();
                 bool statLoop = true;
                 while (statLoop)
                 {
                     Console.Clear();
                     Console.WriteLine(DisplayStats(preStats));
-                    Console.WriteLine("\n\nType numbers from 1 to 6 to Prevent stats from being rerolled");
-                    Console.WriteLine("Type C to Cancel, type F to finish stat creation, type R to reroll");
+                    Console.WriteLine("\n\nType numbers from 1 to 6 to Prevent stats from being rerolled (X for locked)");
+                    Console.WriteLine("Type C to Cancel, type F to finish and save stats, type R to reroll");
                     string input = Console.ReadLine();
                     switch (input)
                     {
@@ -115,28 +115,36 @@ namespace DnD_Char_Creator
                         case "R":
                             if (!preStats.STR.locked)
                             {
-                                preStats.STR = Char.MakeStat("STR");
+                                preStats.STR = Stat.MakeStat("STR");
                             }
                             if (!preStats.DEX.locked)
                             {
-                                preStats.DEX = Char.MakeStat("DEX");
+                                preStats.DEX = Stat.MakeStat("DEX");
                             }
                             if (!preStats.CON.locked)
                             {
-                                preStats.CON = Char.MakeStat("CON");
+                                preStats.CON = Stat.MakeStat("CON");
                             }
                             if (!preStats.INT.locked)
                             {
-                                preStats.INT = Char.MakeStat("INT");
+                                preStats.INT = Stat.MakeStat("INT");
                             }
                             if (!preStats.WIS.locked)
                             {
-                                preStats.WIS = Char.MakeStat("WIS");
+                                preStats.WIS = Stat.MakeStat("WIS");
                             }
                             if (!preStats.CHA.locked)
                             {
-                                preStats.CHA = Char.MakeStat("CHA");
+                                preStats.CHA = Stat.MakeStat("CHA");
                             }
+                            break;
+                        case "Josh":
+                            preStats.STR.value = 18;
+                            preStats.DEX.value = 18;
+                            preStats.CON.value = 18;
+                            preStats.INT.value = 18;
+                            preStats.WIS.value = 18;
+                            preStats.CHA.value = 18;
                             break;
                     }
                 }// make Stats
@@ -145,6 +153,30 @@ namespace DnD_Char_Creator
                     break;
                 }
                 character.SetStats(preStats);
+                bool detailLoop = true;
+                while (detailLoop)
+                {
+                    Console.Clear();
+                    Console.Write("Please insert your character's name: ");
+                    string name = Console.ReadLine();
+                    Console.Wri
+                }
+                if (!programLoop)
+                {
+                    break;
+                }
+                bool personalityLoop = true;
+                while (personalityLoop)
+                {
+                    Console.Clear();
+
+                    string input = Console.ReadLine();
+                    
+                } // make personality and appearance
+                if (!programLoop)
+                {
+                    break;
+                }
             }
         }
         static string DisplayStats(StatGroup stats)
