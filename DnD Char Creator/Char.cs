@@ -38,16 +38,16 @@ namespace DnD_Char_Creator
             this.neutralIdeal = persArray[5];
             this.otherIdeal = persArray[6];
         }
-        public void SetPersArrays(Personality[] lawIdeals, Personality[] alignmentIdeals, Personality[] bonds)
+        public void SetPersArrays(Personality[,] input) //Personality[] lawIdeals, Personality[] alignmentIdeals, Personality[] bonds)
         {
-            this.lawIdeals = lawIdeals;
-            this.alignmentIdeals = alignmentIdeals;
-            this.bonds = bonds;
+            this.lawIdeals = new Personality[] { input[0, 0], input[0, 1] };
+            this.alignmentIdeals = new Personality[] { input[1, 0], input[1, 1] };
+            this.bonds = new Personality[] { input[2, 0], input[2, 1] };
         }
         public static string GetTown()
         {
             int ID = rnd.Next(1, 101);
-            double math = (175 / ID - 16) - 1.5;
+            double math = 175 / (ID + 16);
             switch ((int)(math))
             {
                 case 1:
@@ -88,7 +88,7 @@ namespace DnD_Char_Creator
         public static string GetSpecies()
         {
             int ID = rnd.Next(1, 101);
-            double math = (128 / ID + 16) - 1;
+            double math = 5.9 * Math.Pow(0.964, ID) + 1;
             switch ((int)math)
             {
                 case 1:
@@ -100,11 +100,9 @@ namespace DnD_Char_Creator
                 case 4:
                     return "Elf";
                 case 5:
-                    return "Dwarf";
+                    return "Tiefling";
                 case 6:
                     return "Dragonborn";
-                case 7:
-                    return "Halfling";
             }
             throw new Exception("Species");
         }

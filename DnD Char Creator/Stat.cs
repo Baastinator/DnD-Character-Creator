@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DnD_Char_Creator;
 
 namespace DnD_Char_Creator
 {
@@ -62,7 +63,12 @@ namespace DnD_Char_Creator
     }
     class StatGroup
     {
-        public Stat STR, DEX, CON, INT, WIS, CHA;
+        public Stat STR { get; set; }
+        public Stat DEX { get; set; }
+        public Stat CON { get; set; }
+        public Stat INT { get; set; }
+        public Stat WIS { get; set; }
+        public Stat CHA { get; set; }
         public StatGroup(Stat[] stats)
         {
             STR = stats[0];
@@ -71,6 +77,17 @@ namespace DnD_Char_Creator
             INT = stats[3];
             WIS = stats[4];
             CHA = stats[5];
+        }
+        public Stat[] GetStats()
+        {
+            Stat[] output = new Stat[6];
+            output[0] = STR;
+            output[1] = DEX;
+            output[2] = CON;
+            output[3] = INT;
+            output[4] = WIS;
+            output[5] = CHA;
+            return output;
         }
     }
     class Personality
@@ -83,7 +100,7 @@ namespace DnD_Char_Creator
             this.locked = locked;
             this.name = name;
         }
-        public Personality GenPers(int ID)
+        public static Personality GenPers(int ID)
         {
             switch (ID)
             {
@@ -104,7 +121,19 @@ namespace DnD_Char_Creator
             }
             throw new Exception("Pers");
         }
-        public Personality GetArrayPers(int ID)
+        public static Personality[] GetPersonalities()
+        {
+            Personality[] output = new Personality[7];
+            output[0] = App();
+            output[1] = Tal();
+            output[2] = Man();
+            output[3] = Tra();
+            output[4] = Fla();
+            output[5] = Neu();
+            output[6] = Oth();
+            return output;
+        }
+        public static Personality GetArrayPers(int ID)
         {
             switch (ID)
             {
@@ -117,7 +146,31 @@ namespace DnD_Char_Creator
             }
             throw new Exception("ArrayPers");
         }
-        Personality App()
+        public static Personality[,] GetArrayPersonalities()
+        {
+            Personality[,] output = new Personality[3, 2];
+            output[0, 0] = Law(); output[0, 1] = Law();
+            output[1, 0] = Ali(); output[1, 1] = Ali();
+            output[2, 0] = Bon(); output[2, 1] = Bon();
+            return output;
+        }
+        public static Personality[,] ChangeArrayPersonalities(Personality[,] old, int x, int y)
+        {
+            switch (x)
+            {
+                case 1:
+                    old[0, y - 1] = Law();
+                    return old;
+                case 2:
+                    old[1, y - 1] = Ali();
+                    return old;
+                case 3:
+                    old[2, y - 1] = Bon();
+                    return old;
+            }
+            throw new Exception("ChangeArrayPersonalities");
+        }
+        static Personality App()
         {
             int ID = NumGen(18);
             switch (ID)
@@ -161,7 +214,7 @@ namespace DnD_Char_Creator
             }
             throw new Exception("App");
         }
-        Personality Tal()
+        static Personality Tal()
         {
             int ID = NumGen(20);
             switch (ID)
@@ -209,7 +262,7 @@ namespace DnD_Char_Creator
             }
             throw new Exception("Tal");
         }
-        Personality Man()
+        static Personality Man()
         {
             int ID = NumGen(16);
             switch (ID)
@@ -249,7 +302,7 @@ namespace DnD_Char_Creator
             }
             throw new Exception("Man");
         }
-        Personality Tra()
+        static Personality Tra()
         {
             int ID = NumGen(12);
             switch (ID)
@@ -281,7 +334,7 @@ namespace DnD_Char_Creator
             }
             throw new Exception("Tra");
         }
-        Personality Fla()
+        static Personality Fla()
         {
             int ID = NumGen(12);
             switch (ID)
@@ -313,7 +366,7 @@ namespace DnD_Char_Creator
             }
             throw new Exception("Fla");
         }
-        Personality Neu()
+        static Personality Neu()
         {
             int ID = NumGen(6);
             switch (ID)
@@ -333,7 +386,7 @@ namespace DnD_Char_Creator
             }
             throw new Exception("Neu");
         }
-        Personality Oth()
+        static Personality Oth()
         {
             int ID = NumGen(6);
             switch (ID)
@@ -353,7 +406,7 @@ namespace DnD_Char_Creator
             }
             throw new Exception("Oth");
         }
-        Personality Law()
+        static Personality Law()
         {
             int ID = NumGen(12);
             switch (ID)
@@ -385,7 +438,7 @@ namespace DnD_Char_Creator
             }
             throw new Exception("Tra");
         }
-        Personality Ali()
+        static Personality Ali()
         {
             int ID = NumGen(12);
             switch (ID)
@@ -417,7 +470,7 @@ namespace DnD_Char_Creator
             }
             throw new Exception("Ali");
         }
-        Personality Bon()
+        static Personality Bon()
         {
             int ID = NumGen(9);
             switch (ID)
