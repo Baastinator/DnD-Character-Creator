@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace DnD_Char_Creator
 {
@@ -7,10 +8,14 @@ namespace DnD_Char_Creator
         static void Main(string[] args)
         {
             bool programLoop = true;
+            bool isPlayer = false;
+            StatGroup preStats = Stat.MakeStats();
+            string[] details = new string[6];
+            Personality[] persArray = new Personality[7];
+            Personality[,] persArrayArray = new Personality[3, 2];
+            Char character;
             while (true)
             {
-                Char character;
-                bool isPlayer = false;
                 while (true)
                 {
                     Console.WriteLine("Please note that this Program is case sensitive");
@@ -34,7 +39,6 @@ namespace DnD_Char_Creator
                     Console.Clear();
                 } // check for NPC
                 character = new Char(isPlayer);
-                StatGroup preStats = Stat.MakeStats();
                 bool statLoop = true;
                 while (statLoop)
                 {
@@ -96,7 +100,6 @@ namespace DnD_Char_Creator
                 if (!programLoop) { break; }
                 character.SetStats(preStats);
                 bool detailLoop = true;
-                string[] details = new string[6];
                 while (detailLoop)
                 {
                     bool[] locks = { false, false, false, false, false, false };
@@ -239,36 +242,35 @@ namespace DnD_Char_Creator
                     }
                 } // make details
                 if (!programLoop) { break; }
-                character.SetDetails(details[0], details[1], details[2], details[3], details[4], details[5]);
-                bool personalityLoop = true;
-                bool personalitySinLoop = true;
-                bool personalityArrLoop = true;
+                character.SetDetails(details);
+                bool personalityLoop = true; bool personalitySinLoop = true; bool personalityArrLoop = true;
                 while (personalityLoop)
                 {
-                    Personality[] persArray = new Personality[7];
-                    Personality[,] persArrayArray = new Personality[3, 2];
-                    Console.Clear();
-                    Console.Write("Would you like to randomise personalities? (Y/n): ");
-                    string randomise = Console.ReadLine();
-                    if (randomise == "Y") {
-                        persArray = Personality.GetPersonalities();
-                        persArrayArray = Personality.GetArrayPersonalities();
-                    } else if (randomise == "n"){
-                        Console.WriteLine("Please Describe your character's Appearance in one word");
-                        persArray[0] = new Personality(Console.ReadLine());
-                        Console.WriteLine("Please Describe your character's Talent in one word");
-                        persArray[1] = new Personality(Console.ReadLine());
-                        Console.WriteLine("Please Describe your character's Mannerisms in one word");
-                        persArray[2] = new Personality(Console.ReadLine());
-                        Console.WriteLine("Please Describe your character's Traits in one word");
-                        persArray[3] = new Personality(Console.ReadLine());
-                        Console.WriteLine("Please Describe your character's Flaws in one word");
-                        persArray[4] = new Personality(Console.ReadLine());
-                        Console.WriteLine("Please Describe your character's neutral Ideals in one word");
-                        persArray[5] = new Personality(Console.ReadLine());
-                        Console.WriteLine("Please Describe your character's other Ideals in one word");
-                        persArray[6] = new Personality(Console.ReadLine());
-                    } else { throw new Exception("randomise personalities"); }
+                    while (true)
+                    {
+                        Console.Clear();
+                        Console.Write("Would you like to randomise personalities? (Y/n): ");
+                        string randomise = Console.ReadLine();
+                        if (randomise == "Y") {
+                            persArray = Personality.GetPersonalities();
+                            persArrayArray = Personality.GetArrayPersonalities();break;
+                        } else if (randomise == "n"){
+                            Console.WriteLine("Please Describe your character's Appearance in one word");
+                            persArray[0] = new Personality(Console.ReadLine());
+                            Console.WriteLine("Please Describe your character's Talent in one word");
+                            persArray[1] = new Personality(Console.ReadLine());
+                            Console.WriteLine("Please Describe your character's Mannerisms in one word");
+                            persArray[2] = new Personality(Console.ReadLine());
+                            Console.WriteLine("Please Describe your character's Traits in one word");
+                            persArray[3] = new Personality(Console.ReadLine());
+                            Console.WriteLine("Please Describe your character's Flaws in one word");
+                            persArray[4] = new Personality(Console.ReadLine());
+                            Console.WriteLine("Please Describe your character's neutral Ideals in one word");
+                            persArray[5] = new Personality(Console.ReadLine());
+                            Console.WriteLine("Please Describe your character's other Ideals in one word");
+                            persArray[6] = new Personality(Console.ReadLine());break;
+                        }
+                    }
                     while (personalitySinLoop)
                     {
                         Console.Clear();
@@ -301,22 +303,80 @@ namespace DnD_Char_Creator
                             case "6": if (persArray[5].locked) persArray[5].locked = false; else persArray[5].locked = true; break;
                             case "7": if (persArray[6].locked) persArray[6].locked = false; else persArray[6].locked = true; break;
                         }
-                        if (!personalitySinLoop) { break; }
+                        if (!personalitySinLoop) break;
                     }
                     while (personalityArrLoop)
                     {
                         Console.Clear();
-                        Console.WriteLine(DisplayStats(preStats));
+                        Console.WriteLine(DisplayArrayPersonalities(persArrayArray));
                         Console.WriteLine("\n\nType numbers from (1) to (3) to Prevent Personalities from being rerolled (X for locked)");
                         Console.WriteLine("Type (C) to Cancel, type (F) to finish and save stats, type (R) to reroll");
                         string input = Console.ReadLine();
                         switch (input)
                         {
+                            case "C":
+                                personalityArrLoop = false; programLoop = false; break;
+                            case "F":
+                                personalityArrLoop = false; break;
+                            case "R":
+                                Personality[,] temp = Personality.GetArrayPersonalities();
 
+                                for (int y = 0; y < 2; y++)
+                                {
+                                    for (int x = 0; x < 3; x++)
+                                    {
+                                        if (!persArrayArray[x, y].locked)
+                                        {
+                                            persArrayArray[x, y] = temp[x, y];
+                                        }
+                                    }
+                                }
+                                break;
+                            case "1": if (persArrayArray[0, 0].locked) persArrayArray[0, 0].locked = false; else persArrayArray[0, 0].locked = true; break;
+                            case "2": if (persArrayArray[0, 1].locked) persArrayArray[0, 1].locked = false; else persArrayArray[0, 1].locked = true; break;
+                            case "3": if (persArrayArray[1, 0].locked) persArrayArray[1, 0].locked = false; else persArrayArray[1, 0].locked = true; break;
+                            case "4": if (persArrayArray[1, 1].locked) persArrayArray[1, 1].locked = false; else persArrayArray[1, 1].locked = true; break;
+                            case "5": if (persArrayArray[2, 0].locked) persArrayArray[2, 0].locked = false; else persArrayArray[2, 0].locked = true; break;
+                            case "6": if (persArrayArray[2, 1].locked) persArrayArray[2, 1].locked = false; else persArrayArray[2, 1].locked = true; break;
                         }
                     }
+                        if (!personalityArrLoop) break;
                 } // make personality and appearance
-                if (!programLoop) { break; }
+                if (!programLoop) break;
+                character.SetPers(persArray);
+                character.SetPersArrays(persArrayArray);
+                bool finalCheckLoop = true;
+                while (finalCheckLoop)
+                {
+                    Console.Clear();
+                    Console.Write(DisplayAll(character));
+                    Console.Write("\n\nTo save to file, type (S)\n");
+                    string input = Console.ReadLine();
+                    bool saveLoop = true; string saveLoopString = "";
+                    if (input == "S")
+                    {
+                        while (saveLoop) { 
+                            Console.Clear();
+                            Console.Write("Please specify a" + saveLoopString + " filename: ");
+                            string path = Environment.CurrentDirectory + "\\";
+                            if (!Directory.Exists(path + "Characters\\")){
+                                Directory.CreateDirectory(path + "Characters\\");
+                            }
+                            path += "Characters\\";
+                            string fileName = Console.ReadLine();
+                            path += fileName + ".txt";
+                            if (!File.Exists(path))
+                            {
+                                using (StreamWriter sw = File.CreateText(path))
+                                {
+                                    sw.Write(DisplayAll(character));
+                                    saveLoop = false;
+                                }
+                            }
+                            else saveLoopString = "n unused";
+                        }
+                    }
+                } // show everything
             }
         }
         static string DisplayStats(StatGroup stats)
@@ -377,14 +437,40 @@ namespace DnD_Char_Creator
             }
             string a = "";
             a += "|---| " + "Law Ideals:\n";
-            a += "| " + locks[0] + " | " + PersArrayArray[0, 0] + "\n";
-            a += "| " + locks[1] + " | " + PersArrayArray[0, 1] + "\n";
+            a += "| " + locks[0] + " | " + PersArrayArray[0, 0].name + "\n";
+            a += "| " + locks[3] + " | " + PersArrayArray[0, 1].name + "\n";
             a += "|---| " + "Alignment Ideals:\n";
-            a += "| " + locks[2] + " | " + PersArrayArray[1, 0] + "\n";
-            a += "| " + locks[3] + " | " + PersArrayArray[1, 1] + "\n";
+            a += "| " + locks[1] + " | " + PersArrayArray[1, 0].name + "\n";
+            a += "| " + locks[4] + " | " + PersArrayArray[1, 1].name + "\n";
             a += "|---| " + "Bonds:\n";
-            a += "| " + locks[4] + " | " + PersArrayArray[2, 0] + "\n";
-            a += "| " + locks[5] + " | " + PersArrayArray[2, 1] + "\n";
+            a += "| " + locks[2] + " | " + PersArrayArray[2, 0].name + "\n";
+            a += "| " + locks[5] + " | " + PersArrayArray[2, 1].name + "\n";
+            return a;
+        }
+        static string DisplayAll(Char chara)
+        {
+            string a = "";
+            string isNPC; if (chara.isPlayer) isNPC = "PC"; else isNPC = "NPC";
+            string Class = ""; if (chara.Class == "None") Class = ""; else Class = chara.Class;
+            a += "(" + isNPC + ") " + chara.name + ", " + chara.sex + " " + chara.species + " " + Class;
+            a += "\n\n" + chara.stats.GetStatString() + "\n\n" + "Hometown: " + chara.residence;
+            a += "\nJob:      " + chara.job + "\n";
+            a += "\nAppearance      : " + chara.appearance.name;
+            a += "\nTalents         : " + chara.talents.name;
+            a += "\nMannerisms      : " + chara.mannerisms.name;
+            a += "\nTraits          : " + chara.traits.name;
+            a += "\nFlaws/Secrets   : " + chara.flawsSecrets.name;
+            a += "\nLaw Ideals      : " + CombinePersArrays(chara.lawIdeals[0].name,chara.lawIdeals[1].name);
+            a += "\nAlighment Ideals: " + CombinePersArrays(chara.alignmentIdeals[0].name,chara.alignmentIdeals[1].name);
+            a += "\nNeutral Ideals  : " + chara.neutralIdeal.name;
+            a += "\nOther Ideals    : " + chara.otherIdeal.name;
+            a += "\nBonds           : " + CombinePersArrays(chara.bonds[0].name,chara.bonds[1].name);
+            return a;
+        }
+        static string CombinePersArrays(string string1, string string2)
+        {
+            string a = "";
+            if (string1 == string2) a = string1; else a = string1 + ", " + string2;
             return a;
         }
     }

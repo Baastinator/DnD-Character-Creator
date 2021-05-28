@@ -89,6 +89,26 @@ namespace DnD_Char_Creator
             output[5] = CHA;
             return output;
         }
+        public string GetStatString()
+        {
+            string[] statNums = new string[6];
+            Stat[] statArray = GetStats();
+            for (int i = 0; i < 6; i++)
+            {
+                if (statArray[i].value >= 10)
+                {
+                    statNums[i] = Convert.ToString(statArray[i].value);
+                } else
+                {
+                    statNums[i] = Convert.ToString(statArray[i].value) + " ";
+                }
+            }
+            string a = "";
+            a += "| STR | DEX | CON | INT | WIS | CHA |\n";
+            a += "|  " + statNums[0] + " |  " + statNums[1] + " |  " + statNums[2] + " |  ";
+            a += statNums[3] + " |  " + statNums[4] + " |  " + statNums[5] + " |";
+            return a;
+        }
     }
     class Personality
     {
@@ -502,3 +522,4 @@ namespace DnD_Char_Creator
         }
     }
 }
+ 

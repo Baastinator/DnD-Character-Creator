@@ -8,7 +8,8 @@ namespace DnD_Char_Creator
         public bool isPlayer = false;
         public StatGroup stats;
         public string name, sex, species, residence, job, Class;
-        public Personality appearance, talents, mannerisms, traits, flawsSecrets, neutralIdeal, otherIdeal;
+        public Personality appearance, talents, mannerisms;
+        public Personality traits, flawsSecrets, neutralIdeal, otherIdeal;
         public Personality[] lawIdeals, alignmentIdeals, bonds;
 
         public Char(bool isPlayer = false)
@@ -19,34 +20,35 @@ namespace DnD_Char_Creator
         {
             this.stats = stats;
         }
-        public void SetDetails(string name, string sex, string species, string residence, string Class, string job)
+        public void SetDetails(string[] details)
         {
-            this.name = name;
-            this.sex = sex;
-            this.species = species;
-            this.residence = residence;
-            this.Class = Class;
-            this.job = job;
+            name = details[0];
+            sex = details[1];
+            species = details[2];
+            residence = details[3];
+            Class = details[4];
+            job = details[5];
         }
         public void SetPers(Personality[] persArray)
         {
-            this.appearance = persArray[0];
-            this.talents = persArray[1];
-            this.mannerisms = persArray[2];
-            this.traits = persArray[3];
-            this.flawsSecrets = persArray[4];
-            this.neutralIdeal = persArray[5];
-            this.otherIdeal = persArray[6];
+            appearance = persArray[0];
+            talents = persArray[1];
+            mannerisms = persArray[2];
+            traits = persArray[3];
+            flawsSecrets = persArray[4];
+            neutralIdeal = persArray[5];
+            otherIdeal = persArray[6];
         }
         public void SetPersArrays(Personality[,] input) //Personality[] lawIdeals, Personality[] alignmentIdeals, Personality[] bonds)
         {
-            this.lawIdeals = new Personality[] { input[0, 0], input[0, 1] };
-            this.alignmentIdeals = new Personality[] { input[1, 0], input[1, 1] };
-            this.bonds = new Personality[] { input[2, 0], input[2, 1] };
+            lawIdeals = new Personality[] { input[0, 0], input[0, 1] };
+            alignmentIdeals = new Personality[] { input[1, 0], input[1, 1] };
+            bonds = new Personality[] { input[2, 0], input[2, 1] };
         }
         public static string GetTown()
         {
-            int ID = rnd.Next(1, 101);
+            return "Not implemented (me and josh gotta make towns first)";
+            /*int ID = rnd.Next(1, 101);
             double math = 175 / (ID + 16);
             switch ((int)(math))
             {
@@ -71,7 +73,7 @@ namespace DnD_Char_Creator
                 case 10:
                     return "Snowbush";
             }
-            throw new Exception("GenTown");
+            throw new Exception("GenTown");*/
         }
         public static string GetSex()
         {
@@ -88,21 +90,37 @@ namespace DnD_Char_Creator
         public static string GetSpecies()
         {
             int ID = rnd.Next(1, 101);
-            double math = 5.9 * Math.Pow(0.964, ID) + 1;
+            double math = 13.9 * Math.Pow(0.93632, ID) + 1;
             switch ((int)math)
             {
                 case 1:
                     return "Human";
                 case 2:
-                    return "Half Elf";
-                case 3:
-                    return "Half Orc";
-                case 4:
                     return "Elf";
+                case 3:
+                    return "Dwarf";
+                case 4:
+                    return "Halfling";
                 case 5:
-                    return "Tiefling";
+                    return "Half Elf";
                 case 6:
-                    return "Dragonborn";
+                    return "Gnome";
+                case 7:
+                    return "Goliath";
+                case 8:
+                    return "Tiefling";
+                case 9:
+                    return "Orc";
+                case 10:
+                    return "Centaur";
+                case 11:
+                    return "Goblin";
+                case 12:
+                    return "Half Orc";
+                case 13:
+                    return "Luxodon";
+                case 14:
+                    return "Minotaur";
             }
             throw new Exception("Species");
         }
